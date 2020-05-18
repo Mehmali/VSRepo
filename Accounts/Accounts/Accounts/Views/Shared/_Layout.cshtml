@@ -1,0 +1,387 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PLA WLMS</title>
+    <!-- Fav  Icon Link -->
+    <link rel="shortcut icon" type="image/png" href="~/images/fav.png">
+    <!-- Bootstrap core CSS -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- themify icons CSS -->
+    <link href="~/css/themify-icons.css" rel="stylesheet" />
+    <!-- Animations CSS -->
+    <link href="~/css/animate.css" rel="stylesheet" />
+    <!-- Main CSS -->
+    <link href="~/css/styles.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="~/css/red.css" id="style_theme">*@
+
+    <link href="~/css/yellow.css" rel="stylesheet" />
+
+    <link href="~/css/responsive.css" rel="stylesheet" />
+    <!-- morris charts -->
+    <link href="~/charts/css/morris.css" rel="stylesheet" />
+    <!-- jvectormap -->
+    <link href="~/css/jquery-jvectormap.css" rel="stylesheet" />
+
+
+    <link href="~/datatable/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+
+    <script src="~/Scripts/modernizr.min.js"></script>
+    @*  <script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <!-- Pre Loader -->
+    <div class="loading">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+    <!--/Pre Loader -->
+    <!--/Pre Loader -->
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="proclinic-bg">
+            <div class="sidebar-header">
+                <a href="index.html"><img src="~/images/logo.png" class="logo" alt="logo" style="width: 50px;height:50px;margin:0px 0px 0px 0px"></a>
+                PLA WLMS
+            </div>
+            debugger
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="#nav-dashboard" data-toggle="collapse" aria-expanded="false">
+                        <span class="ti-home"></span> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#nav-rooms" data-toggle="collapse" aria-expanded="false">
+                        <span class="ti-key"></span> User Adimistration
+                    </a>
+                    <ul class="collapse list-unstyled" id="nav-rooms">
+                        <li>
+                            <a href="@Url.Action("UsersList", "Login")">User Listing</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("UserAccessRights", "Login")">Access Settings</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#nav-departments" data-toggle="collapse" aria-expanded="false">
+                        <span class="ti-home"></span> Department
+                    </a>
+                    <ul class="collapse list-unstyled" id="nav-departments">
+                        <li>
+                            @Html.ActionLink("Add Department", "AddNewDept", "Department")
+                        </li>
+                        <li>
+                            @Html.ActionLink("All Departments", "Index", "Department")
+                        </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#nav-patients" data-toggle="collapse" aria-expanded="false">
+                        <span class="ti-wheelchair"></span> Patients
+                    </a>
+                    <ul class="collapse list-unstyled" id="nav-patients">
+                        <li>
+                            @Html.ActionLink("Add Patient", "AddNewPatient", "Patient")
+                        </li>
+                        <li>
+                            @Html.ActionLink("All Patients", "Index", "Patient")
+                        </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#nav-doctors" data-toggle="collapse" aria-expanded="false">
+                        <span class="ti-user"></span> Doctors
+                    </a>
+                    <ul class="collapse list-unstyled" id="nav-doctors">
+                        <li>
+                            @Html.ActionLink("New Doctor", "AddNewDoctor", "Doctor")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Doctor List", "Index", "Doctor")
+                        </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#nav-appointment" data-toggle="collapse" aria-expanded="false">
+                        <span class="ti-pencil-alt"></span> Appointments
+                    </a>
+                    <ul class="collapse list-unstyled" id="nav-appointment">
+                        <li>
+                            <a href="add-appointment.html">Add Appointment</a>
+                        </li>
+                        <li>
+                            <a href="appointments.html">All Appointments</a>
+                        </li>
+                        <li>
+                            <a href="about-appointment.html">Appointment Details</a>
+                        </li>
+                        <li>
+                            <a href="edit-appointment.html">Edit Appointment</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#nav-payment" data-toggle="collapse" aria-expanded="false">
+                        <span class="ti-money"></span> Payments
+                    </a>
+                    <ul class="collapse list-unstyled" id="nav-payment">
+                        <li>
+                            <a href="add-payment.html">Add Payment</a>
+                        </li>
+                        <li>
+                            <a href="payments.html">All Payments</a>
+                        </li>
+                        <li>
+                            <a href="about-payment.html">Payment Invoice</a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+            <div class="nav-help animated fadeIn">
+                <h5><span class="ti-comments"></span> Need Help</h5>
+                <h6>
+                    <span class="ti-mobile"></span> +1 1234 567 890
+                </h6>
+                <h6>
+                    <span class="ti-email"></span> email@site.com
+                </h6>
+                <p class="copyright-text">Copy rights &copy; 2018</p>
+            </div>
+        </nav>
+        <!-- /Sidebar -->
+        <!-- Page Content -->
+        <div id="content">
+
+            <div class="container-fluid">
+                <!-- Top Navigation -->
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="responsive-logo">
+                            @*<a href="index.html"><img src="http://localhost:8866/images/logo-dark.png" class="logo" alt="logo"></a>*@
+                            <a href="index.html"><img src="~/images/logo.png" class="logo" alt="logo" style="width: 35px;height:35px;margin:0px 0px 0px 0px"></a>
+                        </div>
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <span class="ti-menu" id="sidebarCollapse"></span>
+                            </li>
+                            <li class="nav-item">
+                                <span title="Fullscreen" class="ti-fullscreen fullscreen"></span>
+                            </li>
+                            <li class="nav-item">
+                                <a data-toggle="modal" data-target=".proclinic-modal-lg">
+                                    <span class="ti-search"></span>
+                                </a>
+                                <div class="modal fade proclinic-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lorvens">
+                                        <div class="modal-content proclinic-box-shadow2">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Search Patient/Doctor:</h5>
+                                                <span class="ti-close" data-dismiss="modal" aria-label="Close">
+                                                </span>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="search-term" placeholder="Type text here">
+                                                        <button type="button" class="btn btn-lorvens proclinic-bg">
+                                                            <span class="ti-location-arrow"></span> Search
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="ti-announcement"></span>
+                                </a>
+                                <div class="dropdown-menu proclinic-box-shadow2 notifications animated flipInY">
+                                    <h5>Notifications</h5>
+                                    <a class="dropdown-item" href="#">
+                                        <span class="ti-wheelchair"></span> New Patient Added
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <span class="ti-money"></span> Patient payment done
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <span class="ti-time"></span>Patient Appointment booked
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <span class="ti-wheelchair"></span> New Patient Added
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="ti-user"></span>
+                                </a>
+                                <div class="dropdown-menu proclinic-box-shadow2 profile animated flipInY">
+                                    @*       <h5> @System.Web.HttpContext.Current.Session["UserName"].ToString().ToUpper()</h5>*@
+                                    <a class="dropdown-item" href='@Url.Action("ChangePassword", "Login")'>
+                                        <span class="ti-settings"></span> Password Reset
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <span class="ti-help-alt"></span> Help
+                                    </a>
+                                    <a class="dropdown-item" href='@Url.Action("Logout", "Login")'>
+                                        <span class="ti-power-off"></span> Logout
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </nav>
+                <!-- /Top Navigation -->
+                <!-- Breadcrumb -->
+                <!-- /Breadcrumb -->
+                <!-- Main Content -->
+                <div id="page-wrapper">
+                    <div class="container-fluid">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+            <!-- /Main Content -->
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- Back to Top -->
+
+    <a id="back-to-top" href="#" class="back-to-top">
+        <span class="ti-angle-up"></span>
+    </a>
+    <!-- /Back to Top -->
+    <!-- Jquery Library-->
+    <!-- Popper Library-->
+    <script src="~/js/popper.min.js"></script>
+    <!-- Bootstrap Library-->
+    <script src="~/js/bootstrap.min.js"></script>
+
+    <!-- Custom Script-->
+    <script src="~/js/custom.js"></script>
+    <!-- Datatable  -->
+    @*<script src="~/datatable/jquery.dataTables.min.js"></script>
+        <script src="~/datatable/dataTables.bootstrap4.min.js"></script>*@
+
+
+
+    @*<div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>*@
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+
+    <button type="button" class="btn btn-primary btn-msgbox" data-toggle="modal" data-target="#newDecisionBox" style="display:none;">
+        Launch modal
+    </button>
+    <div class="modal fade" id="newDecisionBox" tabindex="-1" role="dialog" aria-labelledby="newnewDecisionBoxLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width:550px;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModallLabel">Message Box</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-lg-12 col-sm-12 col-12">
+                        <div class="modal-body MsgBoxbody">
+                            Decision Msg Box
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="funDialLogValue(0)">No</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="funDialLogValue(1)">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <button type="button" class="btn btn-primary btn-infobox" data-toggle="modal" data-target="#newInfoBox" style="display:none;">
+        Launch modal
+    </button>
+    <div class="modal fade" id="newnewInfoBox" tabindex="-1" role="dialog" aria-labelledby="newnewInfoBoxLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width:550px;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModallLabel">Message Box</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-lg-12 col-sm-12 col-12">
+                        <div class="modal-body MsgBoxbody">
+                            info Msg Box
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function GetApplicationURL() {
+
+            return '@System.Configuration.ConfigurationManager.AppSettings["AppURL"]';
+
+        }
+        function ReloadPage() {
+            window.location.reload();
+        }
+
+        function OpenUrl(url) {
+            window.location.url = GetApplicationURL() + url;
+        }
+       
+
+        function isNumber(evt) {
+            debugger;
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode != 46) {
+                return false;
+            }
+            return true;
+        }
+    </script>
+    
+    
+
+   
+</body>
+
+</html>

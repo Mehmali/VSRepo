@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "Update User Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .labelMargin {
+        margin-top: 15px;
+    }
+</style>
+<!-- Page Title -->
+<div class="row no-margin-padding">
+    <div class="col-md-6">
+        <h3 class="block-title">User Profile Update</h3>
+    </div>
+    <div class="col-md-6">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("UsersList","Login")">
+                    <span class="ti-home"></span>
+                </a>
+            </li>
+        </ol>
+    </div>
+</div>
+<!-- /Page Title -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="form-group col-md-12">
+            <div class="control-label col-xs-2"></div>
+            <div class="form-group col-md-5">
+                <div class="alert alert-danger" id="spnerror" style="display: none; margin-left: 3%;">
+                    <a href="javascript:void(0);" class="close" onclick="hideError();" title="close">×</a>
+                    <strong>Warning!</strong> <span> Please enter machine description.</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="widget-area-2 proclinic-box-shadow">
+            <form>
+                <div class="form-group row " style=" margin:0px;">
+                    <label class="control-label col-sm-2 labelMargin" for="email">User Name:</label>
+                    <div class="col-lg-3 col-md-3 col-sm-10">
+                        <input type="email" class="form-control" id="UserName" placeholder="Enter User Name" autocomplete="off" disabled>
+                        <input type="hidden" class="form-control" id="UserId" placeholder="Enter User Name" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group row " style=" margin:0px;">
+                    <label class="control-label col-sm-2 labelMargin" for="email">Email:</label>
+                    <div class="col-lg-3 col-md-3 col-sm-10">
+                        <input type="email" class="form-control" id="EmailAddress" placeholder="Enter email" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group row " style=" margin:0px;">
+                    <label class="control-label col-sm-2 labelMargin" for="pwd">New Password:</label>
+                    <div class="col-lg-3 col-md-3 col-sm-10">
+                        <input type="password" class="form-control" id="Password" placeholder="Enter password" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group row " style=" margin:0px;">
+                    <label class="control-label col-sm-2 labelMargin" for="pwd">Re-Type Password:</label>
+                    <div class="col-lg-3 col-md-3 col-sm-10">
+                        <input type="password" class="form-control" id="Password2" placeholder="Enter password">
+                    </div>
+                </div>
+                <div class="form-group row " style=" margin:0px;">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-primary" onclick="UpdateUser();">Update</button>
+                        <button type="button" id="cmdGoToIndex" class="btn btn-default btn-primary btnCancel" data-dismiss="modal">Go Back</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- /Widget Item -->
+</div>
+
+
+
+<script type="text/javascript">
+    var Archieved = false;
+    $(document).ready(function () {
+        $("#UserId").val(@ViewBag.UserID);
+        LoadData();
+    });
+
+
+    function LoadData() {
+        $.ajax({
+            url: "@Url.Action("LoadEditData", "Login")",
+            datatype: "JSON",
+            type: "GET",
+            async: true,
+            data: { UserID: $("#UserId").val().trim() }
+        }).done(function (obj) {
+            $("#UserName").val(obj.Username);
+            $("#EmailAddress").val(obj.EmailAddress);
+            Archieved = obj.Archieved;
+        }).fail(function () { alert("Data Loading Failed"); });
+
+    }
+    function UpdateUser() {
+        var Obj = new Object();
+        debugger;
+        Obj.UserID = $("#UserId").val();
+        Obj.UserName = $("#UserName").val();
+        Obj.Password = $("#Password").val();
+        Obj.EmailAddress = $("#EmailAddress").val();
+
+        if (UserValidation() == false) {
+            $.ajax({
+                url: "@Url.Action("UpdateUserData", "Login")",
+                type: "POST",
+                async: false,
+                dataType: "json",
+                data: { userObj: JSON.stringify(Obj) }
+            })
+        .done(function (data) {
+            if (data == "Saved") {
+                $("#spnerror").show();
+                $("#spnerror").removeClass("alert-danger alert-success").addClass("alert-success")
+                $("#spnerror span").html("User Successfully Created");
+                clearFields();
+            }
+            else {
+                $("#spnerror").show();
+                $("#spnerror span").html(data);
+            }
+        })
+        .fail(function () {
+            alert("An error occured while saving data. Please contact IT Team");
+        });
+        }
+    }
+    function UserValidation() {
+        var err = '';
+
+        $("#spnerror").hide();
+        $('.error').removeClass('error');
+        if ($("#UserName").val().trim() == "") {
+            $("#UserName").addClass('error');
+            err = '</br>* User Name should not be blank </br> ';
+        }
+        if ($("#Password").val().trim() == "") {
+            $("#Password").addClass('error');
+            err = err + '* Password should not be blank </br> ';
+        }
+        if ($("#Password").val().trim() != $("#Password2").val().trim()) {
+            $("#Password1").addClass('error');
+            err = err + '* Please Retype Password Correctly </br> ';
+        }
+        if ($("#EmailAddress").val().trim() == "") {
+            $("#EmailAddress").addClass('error');
+            err = err + '* Email Address should not be blank </br> ';
+        }
+        if (validateEmail($("#EmailAddress").val().trim()) == false) {
+            $("#EmailAddress").addClass('error');
+            err = err + '* Invalid Email Address entered </br> ';
+        }
+        if (err.trim() != "") {
+            $("#spnerror").show();
+            $("#spnerror span").html(err);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    function validateEmail(sEmail) {
+      
+        var filter = /^[_\.0-9a-zA-Z-]+@@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i;
+        if (filter.test(sEmail)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function hideError() {
+        $("#spnerror").hide();
+    }
+
+    $("#cmdGoToIndex").click(function () {
+        debugger;
+        window.location = "@Url.Action("UsersList", "Login")"
+    });
+
+</script>

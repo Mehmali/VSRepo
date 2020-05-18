@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Access Denied";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .back {
+        background: url(../images/back-icon.png) left center no-repeat;
+        display: inline-block;
+        width: 37px;
+        height: 36px;
+        cursor: pointer;
+        margin: 0px 10px 0px 0px;
+    }
+</style>
+<h2 class="FontOSLight TicketsCount" style="float: left; margin-left: 0px;width:100%">
+    <span class="back" onclick="GoBack();" style="float: left;"></span><span id="spnOwnerName" style="font-size: 21px;"> Access Denied</span>
+</h2>
+</br>
+<div style="font-size:18px;">Access Denied. Please contact to IT department.</div>
+
+<script type="text/javascript">
+    function GoBack() {
+        window.history.back();
+    }
+</script>

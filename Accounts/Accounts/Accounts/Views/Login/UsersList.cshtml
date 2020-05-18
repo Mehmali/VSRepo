@@ -1,0 +1,190 @@
+﻿@model PagedList.IPagedList<Accounts.Models.classUser>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Quality Codes Listing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/TablePaginationStyles.css" rel="stylesheet" />
+
+
+<style>
+
+
+    .editimage {
+        background-image: url(../images/edit.png);
+        width: 20px;
+        height: 20px;
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+    }
+
+    .userRights {
+        background-image: url(../images/UserSettings.PNG);
+        width: 20px;
+        height: 20px;
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+    }
+</style>
+<!doctype html>
+<html>
+<head>
+    <title>Users List</title>
+
+    <script src="~/Scripts/jquery.table2excel.js"></script>
+    <script src="~/Scripts/jquery.simplePagination.js"></script>
+</head>
+<body>
+    <!-- Page Title -->
+    <div class="row no-margin-padding">
+        <div class="col-md-6">
+            <h3 class="block-title">User Listing</h3>
+        </div>
+        <div class="col-md-6">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("index","home")">
+                        <span class="ti-home"></span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" id="CmdNew">User Add</li>
+                <li class="breadcrumb-item active" id="btnGenerateExcel" onclick="ExportToExcel()">export to excel</li>
+            </ol>
+        </div>
+    </div>
+    <!-- /Page Title -->
+    @using (Html.BeginForm("UsersList", "Login", null, FormMethod.Post, new { @id = "myForm", @name = "myForm" }))
+    {
+         <div class="row">
+            <div class="col-md-12">
+                <div class="widget-area-2 proclinic-box-shadow">
+                  
+                    <div class="row" style="border:1px solid;margin:0px;">
+                        <div class="col-lg-4 col-sm-12 col-xs-12" style="margin: 0px; padding: 0px;">
+                            <div class="input-group">
+                                <input type="text" class="form-control input-sm" name="UserName" id="UserName" placeholder="Enter User Name" autocomplete="off" style="height:37px;">
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary input-sm" type="submit">
+                                        <span class="ti-search"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
+                    <div class="table-responsive mb-3">
+                        <table id="tblUsrList" class="table table-bordered table-striped">
+                            <thead>
+                                <tr class="info">
+                                    <th style="width:10%">ID</th>
+                                    <th style="width:15%">Name</th>
+                                    <th style="width:10%">E-Mail</th>
+                                    <th class="noExl" style="width:30%">Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="gRow">
+                                        <td class="UserID">
+                                            @Html.DisplayFor(modelItem => item.UserID)
+                                        </td>
+                                        <td class="User Name">
+                                            @Html.DisplayFor(modelItem => item.Username)
+                                        </td>
+                                        <td class="E-Mail">
+                                            @Html.DisplayFor(modelItem => item.EmailAddress)
+                                        </td>
+                                        <td class="noExl" style="cursor: pointer; min-width: 90px;">
+                                            <div class="pull-left editimage" style="text-align: center; padding-top: 8px; color: blue; text-decoration: underline;float:left !important" onclick="Edit(this)" title="Edit User Profile"></div>
+                                            <div class="pull-left userRights" style="text-align: center; padding-top: 8px; color: blue; text-decoration: underline;float:left !important" onclick="AccessSettings(this)" title="User Rights Settings"></div>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                        <div style="float: right;">
+                            @Html.PagedListPager(Model, page => Url.Action("UsersList", new { page, UserName = ViewBag.UserName, EmailAddress = ViewBag.EmailAddress }))
+                        </div>
+                        <!--Export links-->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center export-pagination">
+                                @*<li class="page-item">
+                                        <a class="page-link" href="#"><span class="ti-download"></span> csv</a>
+                                    </li>*@
+                                @*<li class="page-item">
+                                        <a class="page-link" href="#"><span class="ti-printer"></span>  print</a>
+                                    </li>*@
+                                <li class="page-item">
+                                    <a class="page-link" href="#" onclick="funExportToExcel('PDF')"><span class="ti-file"></span> PDF</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" onclick="funExportToExcel('Excel')"><span class="ti-align-justify"></span> Excel</a>
+
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- /Export links-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</body>
+</html>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#CmdNew").click(function () {
+            window.location = "@Url.Action("NewUser", "Login")"
+        });
+
+    });
+
+    function Edit(obj) {
+        var mData = $(obj).parents(".gRow").find(".UserID").text().trim();
+        var url = "@Url.Action("LoadUserUpdate", "Login")"
+        $.ajax({ url: url, type: "GET", data: { Uid: mData.trim() } }).done(function (data) {
+            window.location.href = "@Url.Action("UpdateUser", "Login")";
+        })
+     .fail(function () {
+         $("#spnerror").show();
+         $("#spnerror span").html("Problem occured while processing request");
+     });
+    }
+
+    function AccessSettings(obj) {
+        var mData = $(obj).parents(".gRow").find(".UserID").text().trim();
+        var url = "@Url.Action("LoadUserRights", "Login")"
+        $.ajax({ url: url, type: "GET", data: { Uid: mData.trim() } }).done(function (data) {
+            window.location.href = "@Url.Action("UserAccessRights", "Login")";
+        })
+     .fail(function () {
+         $("#spnerror").show();
+         $("#spnerror span").html("Problem occured while processing request");
+     });
+    }
+
+    function funExportToExcel(printType) {
+
+        var mainobj = new Object();
+        mainobj.ReportType = "UserListing";
+        mainobj.ExportType = printType;
+        $.ajax({ url: "@Url.Action("setRptSessionVar", "DailyReport")", type: "POST", async: false, dataType: "json", data: { master: JSON.stringify(mainobj) } })
+        .done(function (data) {
+            debugger;
+            if (data == "Done") {
+                window.open("@Url.Action("funRptUserListing", "DailyReport")", '_blank');
+            }
+        })
+        .fail(function () {
+            alert("Report genertation has problem...");
+        });
+    }
+
+
+</script>

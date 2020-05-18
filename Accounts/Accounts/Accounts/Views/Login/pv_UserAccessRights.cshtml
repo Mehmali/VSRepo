@@ -1,0 +1,66 @@
+﻿@model PagedList.IPagedList<Accounts.Models.UserPermissions>
+@using PagedList.Mvc;
+<link href="~/css/TablePaginationStyles.css" rel="stylesheet" />
+
+    
+    <div class="table-responsive mb-3">
+        <table id="tblUsrAccessRights" class="table table-responsive table-bordered table-striped table-hover">
+            <thead>
+                <tr class="info">
+                    <th style="width:2%;">@Html.CheckBox("selectall")</th>
+                    <th style="width:10%">
+                        Menu ID
+                    </th>
+                    <th style="width:10%">
+                        Menu Name
+                    </th>
+                    <th style="width:10%">
+                        Main Program
+                    </th>
+                    <th style="width:10%">
+                        Menu Details
+                    </th>
+                    <th style="width:10%">
+                        User Name
+                    </th>
+                    <th style="width:10%">
+                        UserID
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="gRow">
+                        <td>
+                            @Html.CheckBox(item.IsAllowed.ToString(), false, new { @class = "ckb", Id = item.ID })
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MenuName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ControllerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MenuDesc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MenuDesc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserID)
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+        </table>
+        <div style="float: right;">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, Status = "11" }))
+        </div>
+    </div>
